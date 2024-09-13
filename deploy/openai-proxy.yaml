@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openai-proxy
+  namespace: ai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openai-proxy
+  template:
+    metadata:
+      labels:
+        app: openai-proxy
+    spec:
+      containers:
+        - name: openai-proxy
+          image: ghcr.io/colearendt/openai-proxy:0.0.1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-credential
+                  key: OPENAI_API_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openai
+  namespace: ai
+spec:
+  selector:
+    app: openai-proxy
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
