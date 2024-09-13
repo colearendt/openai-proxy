@@ -1,7 +1,10 @@
 VERSION := "0.0.1"
 
 build:
-	docker build -t ghcr.io/colearendt/openai-proxy:{{VERSION}} .
+	docker build --platform=linux/amd64 -t ghcr.io/colearendt/openai-proxy:{{VERSION}} .
+
+push:
+	docker push ghcr.io/colearendt/openai-proxy:{{VERSION}}
 
 install:
 	go install openai-proxy

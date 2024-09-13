@@ -4,7 +4,7 @@ metadata:
   name: openai-proxy
   namespace: ai
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: openai-proxy
@@ -16,6 +16,7 @@ spec:
       containers:
         - name: openai-proxy
           image: ghcr.io/colearendt/openai-proxy:0.0.1
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
